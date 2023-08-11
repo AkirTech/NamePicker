@@ -4,15 +4,12 @@ from tkinter import *
 from tkinter import ttk
 import glob
 import webbrowser
-import json
 
-#Open source code with MIT License.
+#Open source code with GNU GPL-v3 License.
 #By Akir_ 2023.6.10
 
 def open_site(url):
     webbrowser.open(url)
-
-
 
 
 def main():
@@ -104,7 +101,7 @@ def main():
     stylebar.configure("NoBorder.TButton" ,  borderwidth=0, highlightthickness=0)
 
     Table3 = ttk.Label(GUI, text="Powered by EFC Tech , ChatGPT as well.",font=("Consolas",10,"italic"),foreground="#ffffff",background="#f5b3b4")
-    Table4 = ttk.Button(GUI, text="View:https://mcmjun.github.io/ !" , command=lambda:open_site("https://mcmjun.github.io/") ,style="NoBorder.TButton" , takefocus=False)
+    Table4 = ttk.Button(GUI, text="View:https://akirtech.github.io/ !" , command=lambda:open_site("https://akirtech.github.io/") ,style="NoBorder.TButton" , takefocus=False)
 
     Table1.pack()
     Table2.pack()
