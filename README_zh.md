@@ -39,6 +39,6 @@
 ## 支持信息
 
 原作者：Akir_(Github:@AkirTech)(email: qige0329@gmail.com)
-官方网站：[点击访问]((https://akirtech.github.io/)
+官方网站：[点击访问](https://akirtech.github.io/)
 
 # 谢谢~
