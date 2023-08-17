@@ -39,6 +39,6 @@
 ## サポート情報
 
 オリジナル著者: Akir_(Github:@AkirTech)(メール: qige0329@gmail.com)
-公式ウェブサイト: [クリックしてアクセス]((https://akirtech.github.io/)
+公式ウェブサイト: [クリックしてアクセス](https://akirtech.github.io/)
 
 # ありがとう〜
