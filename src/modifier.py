@@ -1,27 +1,40 @@
 from tkinter import *
 import sqlite3 as sql
 import glob
-from tkinter import ttk
 import configparser
 import hashlib
 import urllib.request as ur
-
+from urllib.error import *
+import requests
+from bs4 import BeautifulSoup
 
 #config read
 cf = configparser.ConfigParser()
 cf.read("config.ini")
 secname = cf.sections()[0]
-pwd = str(cf.get(secname,'Password'))
-urltar = str(cf.get(secname,"passurl"))
+pwd = str(cf.get("RootPassword",'Password'))
+urltar = str(cf.get("RootPassword","passurl"))
 
 #fetch the password from remote server
-target =ur.urlopen(urltar)
-targetstr = str(target.read(32))
-truetar = targetstr[2:-1]
-print(truetar)
+headers = {
+    'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/86.0.4240.193 Safari/537.36'
+}
+target =requests.get(urltar,headers= headers)
+targetstr = target.text
+if "github" in urltar:
+    truetar = targetstr
 
-def premain():
-    main_DEL(pwd)
+else:
+    soup = BeautifulSoup(targetstr,features='html.parser')
+    truetar = soup.p.string[13:46]  #'Cauze the "soup.p.string" returns "UserPassword:......"
+print(len(truetar))
+print("Debug:found remote password:",truetar)
+
+#Transmit the premission.
+
+def close_window():
+    Window.destroy()
+
 
 #Data operation
 def main_DEL(rootword):
@@ -86,14 +99,14 @@ def main_DEL(rootword):
             query2 = "DELETE FROM {} WHERE ID = {}".format(table_name,innum)
             newcursor.execute(query2)
             conn.commit()
-            success = Label(Window , text="Successfully deleted {}".format(namegot) , font=("SimSun", 10),width=40).grid(row=4,column=1)
+            success = Label(Window , text="Successfully deleted {}.".format(namegot) , font=("SimSun", 10),width=40).grid(row=4,column=1)
             inbox_init.set("")
             password_init.set("")
         elif inpassmd5 == truetar:
             query2 = "DELETE FROM {} WHERE ID = {}".format(table_name,innum)
             newcursor.execute(query2)
             conn.commit()
-            success = Label(Window , text="The ADMIN deleted {}".format(namegot) , font=("SimSun", 10),width=40).grid(row=4,column=1)
+            success = Label(Window , text="Deleted {} via ADMIN password.".format(namegot) , font=("SimSun", 10),width=40).grid(row=4,column=1)
             inbox_init.set("")
             password_init.set("")
         else:
@@ -103,29 +116,25 @@ def main_DEL(rootword):
     except Exception as e:
         print(f"Error occurred: {e}")
         return None
-    
 
 
     #query2 = "DELETE FROM {} WHERE ID = {}".format(table_name,inbox_init)
     #newcursor.execute(query2)
 
 
-def close_window():
-    Window.destroy()
-
 
 
 #GUI_Construction
 Window = Tk()
 Window.title("Modifier")
-Window.iconbitmap("17-logo-v2.ico")
+Window.iconbitmap("Editor-v2.ico")
 mainframe = Frame(Window)
 Window.resizable(False,False)
 
 screen_width = Window.winfo_screenwidth()
 screen_height = Window.winfo_screenheight()
 window_width = 400
-window_height = 150
+window_height = 130
 x_position = (screen_width - window_width) // 2
 y_position = (screen_height - window_height) // 2
 X_MOVE = screen_width // 6
@@ -133,7 +142,7 @@ Y_MOVE = screen_height // 10
 
 Window.geometry(f"{window_width}x{window_height}+{x_position - X_MOVE}+{y_position - Y_MOVE}")
 
-if target.getcode() != 200 :
+if target.status_code != 200 :
     errtip = Label(Window ,text="ERROR",font=("SimSun", 17)).grid(row=0,column=1)
     errtip2 = Label(Window, text="Cannot connect to Password service!").grid(row=1,column=1)
     Window.after(5000,close_window)
@@ -153,6 +162,6 @@ else :
     password_init = StringVar()
     password_init.set("")
     password = Entry(Window ,textvariable=password_init , width = 20,show="*").grid(column=1 , row=2)
-    btn = Button(Window , text="Delete" , command=premain).grid(row=3,column=1)
+    btn = Button(Window , text="Delete" , command=lambda:main_DEL(pwd)).grid(row=3,column=1)
 
     Window.mainloop()
