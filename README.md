@@ -1,8 +1,8 @@
 # NamePicker
-The repository of NamePicker developed mainly by Akir_
+The repository of NamePicker developed mainly by Akir_（Zhengqi Zhang）
 ## Copyright
 As for copyright , its code is under GNU GPL-v3 License , but the art resources are not open , they are not for public use!
-## Choose language
+## Choose README file language
 Choosing the suitable language can help you read the README file faster.    
 **!When it occurs to argument , refer to the English version!**
 
